@@ -1,22 +1,24 @@
 import os
 from functools import partial
 
-import src.models.train as tr
 from ray import tune
 from ray.tune import CLIReporter
 from ray.tune.schedulers import ASHAScheduler
 
+import src.models.train as tr
+
 root_dir = os.path.abspath("..")
+
 
 def ray_tuning():
     num_samples = 20
     max_num_epochs = 20
     gpus_per_trial = 0
 
-    if not os.path.isdir(root_dir+'/data/tuning'):
-        os.mkdir(root_dir+'/data/tuning')
+    if not os.path.isdir(root_dir + '/data/tuning'):
+        os.mkdir(root_dir + '/data/tuning')
 
-    data_dir = os.path.abspath(root_dir+"/data/tuning")
+    data_dir = os.path.abspath(root_dir + "/data/tuning")
 
     config = {
         "lr": tune.loguniform(1e-5, 1e-2),

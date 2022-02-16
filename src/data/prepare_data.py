@@ -7,13 +7,14 @@ from tqdm import tqdm
 root_dir = os.path.abspath("..")
 
 
-def unzip(file):
-    if file == 'train':
-        with zipfile.ZipFile(root_dir + '/data/train-clean-100.zip', 'r') as zip_ref:
-            zip_ref.extractall(root_dir + '/data/train100/')
-    if file == 'test':
-        with zipfile.ZipFile(root_dir + '/data/test-clean.zip', 'r') as zip_ref:
-            zip_ref.extractall(root_dir + '/data/test/')
+def unzip_train(path_to_file=root_dir + '/data/train-clean-100.zip'):
+    with zipfile.ZipFile(path_to_file, 'r') as zip_ref:
+        zip_ref.extractall(root_dir + '/data/train100/')
+
+
+def unzip_test(path_to_file=root_dir + '/data/test-clean.zip'):
+    with zipfile.ZipFile(path_to_file, 'r') as zip_ref:
+        zip_ref.extractall(root_dir + '/data/test/')
 
 
 def extract_paths():
@@ -49,4 +50,3 @@ def extract_paths():
                     dict_test_path[speaker].append(root + '/' + f)
 
     return dict_train_path, dict_test_path, train_classes, test_classes
-

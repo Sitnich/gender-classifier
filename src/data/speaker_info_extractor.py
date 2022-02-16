@@ -14,19 +14,11 @@ def extract_classes():
         if 'train-clean-100' in line:
             line_list = re.split("\n|\|", line)[:2]
             stripped = [s.strip() for s in line_list]
-            if stripped[1] == 'F':
-                stripped[1] = 0
-            else:
-                stripped[1] = 1
 
             list_train = np.append(list_train, np.array([stripped]), axis=0)
         if 'test-clean' in line:
             line_list = re.split("\n|\|", line)[:2]
             stripped = [s.strip() for s in line_list]
-            if stripped[1] == 'F':
-                stripped[1] = 0
-            else:
-                stripped[1] = 1
 
             list_test = np.append(list_test, np.array([stripped]), axis=0)
 

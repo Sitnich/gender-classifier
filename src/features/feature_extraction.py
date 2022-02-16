@@ -48,8 +48,8 @@ def extract_features(dict_train_path, train_classes, file):
         for f in dict_train_path[speaker]:
             features = feature_extraction(f, "mel")
             feature_list.append(features)
-            if sex == 0:
-                label.append(1)
+            if sex == 'F':
+                label.append(1)  # метке=1 будет соответствовать женский пол
             else:
                 label.append(0)
 
@@ -62,5 +62,3 @@ def extract_features(dict_train_path, train_classes, file):
     if file == 'test':
         np.save(root_dir + "/data/all_test_audio_features.npy", X)
         np.save(root_dir + "/data/all_test_labels.npy", Y)
-
-

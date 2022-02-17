@@ -13,7 +13,8 @@ pip install -r requirements.txt
 Далее для взаимодействия с моделью можно воспользоваться файлом cli.py:
 ``` 
 python3 workflow\scripts\cli.py 
-
+``` 
+``` 
     Usage: cli.py [OPTIONS] COMMAND [ARGS]...
     
     Options:
@@ -29,7 +30,7 @@ python3 workflow\scripts\cli.py
 Чтобы проверить работу модели нужно положить wav-файлы для предсказания в директорию 
 \data\input\  и запустить команду **predict**: ``` python3 workflow\scripts\cli.py predict --help```
 
-Чтобы распаковать и извлечь признаки из обучающей и тестовой выборок LibriTTS, нужно сперва их
+Если понадобится распаковать и извлечь признаки из обучающей и тестовой выборок LibriTTS, нужно сперва их
 загрузить из сторонних источников (github не позволяет загружать объемные файлы), а затем
 воспользваться командой **process**: ``` python3 workflow\scripts\cli.py process --help ```
 

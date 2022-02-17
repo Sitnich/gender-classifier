@@ -1,17 +1,22 @@
 import os
 
+import matplotlib.pyplot as plt
 import torch
-from ray import tune
+
 from torch import optim
 from torch.nn import functional as F
 from torch.utils.data import DataLoader, random_split
 from tqdm import tqdm
+
+root_dir = os.path.abspath("..")
 
 import src.data.loaders as ld
 import src.models.model_classes as cl
 
 
 def train_n_tune(config, checkpoint_dir=None, data_dir=None):
+    from ray import tune
+
     # загружаем обучающую и тестовую выборки
 
     X_train, Y_train, X_test, Y_test = ld.load_train_test()
@@ -104,14 +109,16 @@ def train_n_tune(config, checkpoint_dir=None, data_dir=None):
                     train_list=train_loss_all, test_list=test_loss_all)
     print("Обучение закончено!")
 
+def train_fix_param_model(config, path = root_dir + '\\reports\\train_info'+'.txt',
+                          root_dir = os.path.abspath("..")):
 
-def train_fix_param_model(config):
     # загружаем обучающую и тестовую выборки
 
-    X_train, Y_train, X_test, Y_test = ld.load_train_test()
+    X_train, Y_train, X_test, Y_test = ld.load_train_test(root_dir = root_dir)
 
     train_dataset = cl.MelDataset(X_train, Y_train)
     test_dataset = cl.MelDataset(X_test, Y_test)
+
 
     model = cl.Model(inp_size=X_train.shape[1])
     epochs, batch_size, lr = config['epochs'], config['batch_size'], config['lr']
@@ -119,6 +126,8 @@ def train_fix_param_model(config):
     optimizer = optim.SGD(model.parameters(), lr=lr, momentum=0.9)
 
     train_loss_all, test_loss_all = [], []
+    train_acc_all, test_acc_all = [], []
+
 
     for ep in range(epochs):
         train_dataloader = DataLoader(train_dataset, shuffle=True, batch_size=batch_size)
@@ -150,6 +159,7 @@ def train_fix_param_model(config):
                 continue
             total_batches_test += 1
 
+
             batch = batch.reshape((batch_size, 1, 128))
             pred = model(batch)
             prob = torch.Tensor([1 if p >= 0.5 else 0 for p in pred]).reshape(-1, 1)
@@ -161,6 +171,24 @@ def train_fix_param_model(config):
 
         train_loss_all.append(train_loss / total_batches_train)
         test_loss_all.append(test_loss / total_batches_train)
-        print(f"Epoch {ep + 1} | Train loss: {train_loss_all[-1]} | Test loss: {test_loss_all[-1]} | \
-Train Accuracy: {100 * train_acc / len(train_dataset)} | Test Accuracy: {100 * test_acc / len(test_dataset)}")
-    return train_loss_all, test_loss_all
+
+        train_acc_all.append(100 * train_acc / len(train_dataset))
+        test_acc_all.append(100 * test_acc / len(test_dataset))
+
+        with open(path, "a") as file:
+            file.write(f"Epoch {ep + 1} | Train loss: {train_loss_all[-1]} | Test loss: {test_loss_all[-1]} | \
+            Train Accuracy: {train_acc_all[-1]} | Test Accuracy: {test_acc_all[-1]} \n")
+    return train_loss_all, test_loss_all, train_acc_all, test_acc_all
+
+
+# функция выводящая графики для обучающей и тестовой выборок
+def print_train_test(train_l, test_l, met='Loss'):
+    plt.figure(figsize=(12, 6))
+    plt.plot(range(len(train_l)), train_l, label="train")
+    plt.plot(range(len(test_l)), test_l, label="test")
+    plt.xlabel("Epoch")
+    plt.ylabel(met)
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(f'images/'+ met + '.png')
+    plt.show()

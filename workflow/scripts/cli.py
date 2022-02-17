@@ -1,5 +1,6 @@
 import os
 import sys
+import pickle
 
 root_dir = os.path.abspath("")
 sys.path.append(root_dir)
@@ -10,8 +11,9 @@ if os.path.basename(os.path.normpath(root_dir)) == 'scripts':
 
 import src.models.predict as prd
 import src.data.loaders as ld
-import src.features.feature_extraction as fe
+import src.models.train as trn
 import src.data.prepare_data as pp
+import src.features.feature_extraction as fe
 from src.data import speaker_info_extractor as clx
 
 import click
@@ -76,6 +78,20 @@ def predict(path):
     with open(path, 'w') as f:
         f.write(info)
     print(info)
+
+@cli.command()
+@click.option("--config", '-c', default=root_dir + '\\models\\config.txt', type=click.Path(),
+              help='путь до конфигурации, с которой будем обучать модель')
+@click.option("--path", '-p', default=root_dir + '\\reports\\train_info.txt', type=click.Path(),
+              help='путь для сохранения вывода обучения')
+def train(config, path):
+    """
+    обучает модель по заданной конфигурации
+    """
+    with open(config, "rb") as fp:
+        config = pickle.load(fp)
+
+    trn.train_fix_param_model(config, path, root_dir = root_dir)
 
 
 if __name__ == "__main__":

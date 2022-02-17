@@ -45,9 +45,9 @@ def load_best_model(root_dir=os.path.abspath(".."), inp_size=128):
     return best_trained_model, optimizer, config
 
 
-def load_train_test():
-    X_train, Y_train = load_data_train()
-    X_test, Y_test = load_data_test()
+def load_train_test(root_dir = os.path.abspath("..")):
+    X_train, Y_train = load_data_train(root_dir)
+    X_test, Y_test = load_data_test(root_dir)
 
     np.random.seed(42)
     X_train, Y_train = shuffle(X_train, Y_train)

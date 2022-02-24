@@ -9,11 +9,9 @@
 1) Активировать виртуальную среду: `.\venv\Scripts\activate`
 2) Установить зависимости: `pip install -r requirements.txt`
 
-<<<<<<< Updated upstream
-Далее для взаимодействия с моделью можно воспользоваться файлом cli.py: `python3 workflow\scripts\cli.py`
-=======
+
 Далее для взаимодействия с моделью можно воспользоваться файлом cli.py: `python workflow\scripts\cli.py`
->>>>>>> Stashed changes
+
 ```
     Usage: cli.py [OPTIONS] COMMAND [ARGS]...
     

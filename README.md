@@ -9,7 +9,11 @@
 1) Активировать виртуальную среду: `.\venv\Scripts\activate`
 2) Установить зависимости: `pip install -r requirements.txt`
 
+<<<<<<< Updated upstream
 Далее для взаимодействия с моделью можно воспользоваться файлом cli.py: `python3 workflow\scripts\cli.py`
+=======
+Далее для взаимодействия с моделью можно воспользоваться файлом cli.py: `python workflow\scripts\cli.py`
+>>>>>>> Stashed changes
 ```
     Usage: cli.py [OPTIONS] COMMAND [ARGS]...
     
@@ -24,11 +28,11 @@
 
 ```
 Чтобы проверить работу модели нужно положить wav-файлы для предсказания в директорию 
-\data\input\  и запустить команду **predict**: ``` python3 workflow\scripts\cli.py predict --help```
+\data\input\  и запустить команду **predict**: ``` python workflow\scripts\cli.py predict --help```
 
 Чтобы распаковать и извлечь признаки из обучающей и тестовой выборок LibriTTS, нужно сперва их
 загрузить из сторонних источников (github не позволяет загружать объемные файлы), а затем
-воспользваться командой **process**: ``` python3 workflow\scripts\cli.py process --help ```
+воспользваться командой **process**: ``` python workflow\scripts\cli.py process --help ```
 
 Для вывода информации о модели и оптимизаторе поможет команда
 **model-info**.
